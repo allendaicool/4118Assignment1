@@ -19,20 +19,21 @@
 
 #include "Header.h"
 char*  readFromStdIn(char * );
-int runProcess ( char ** , LinkedList *);
+int runProcess ( char ** , struct LinkedList*);
 int changeDir(char *);
-int addPathFun(char * , LinkedList* );
-int displayAllPath(LinkedList* );
-int pathOperation (char ** , LinkedList*);
-Node* removePathFun( char * , LinkedList*,int * );
-int searchPathExist( char * , LinkedList* );
-int searchInPath(LinkedList* , char * );
+int addPathFun(char * , struct LinkedList* );
+int displayAllPath(struct LinkedList* );
+int pathOperation (char ** , struct LinkedList* );
+struct Node* removePathFun( char * , struct LinkedList* , int *);
+int searchPathExist( char * , struct LinkedList* );
+int searchInPath(struct LinkedList* , char * );
 
 
 int main(int argc, const char * argv[])
 {
 
-	LinkedList * start = (LinkedList *)malloc(sizeof(LinkedList));
+	struct LinkedList * start = (struct LinkedList *)malloc(
+								sizeof(struct LinkedList));
 		
 
 	while(1)
@@ -123,7 +124,7 @@ char* readFromStdIn(char * buffer )
 	return buffer;
 }
 
-int runProcess ( char ** command, LinkedList* start)
+int runProcess ( char ** command,struct LinkedList * start)
 {
 	int exist = searchInPath(start,command[0]) ;
 	if(exist == 0 )
@@ -168,7 +169,7 @@ int changeDir( char * path)
 	}
 }
 
-int pathOperation (char ** command, LinkedList* start)
+int pathOperation (char ** command, struct LinkedList* start)
 {
 	if( command[1] ==NULL)
 	{
@@ -186,7 +187,7 @@ int pathOperation (char ** command, LinkedList* start)
 	else if(strcmp(command[1],"-")==0)
 	{
 		int status = 0 ;
-		Node * result = removePathFun(command[2],start, &status);
+		struct Node * result = removePathFun(command[2],start, &status);
 		if(result == NULL && status==0)
 		{
 			perror("there is no such path");
@@ -205,9 +206,9 @@ int pathOperation (char ** command, LinkedList* start)
 	return 1;
 }
 
-int displayAllPath(LinkedList* start)
+int displayAllPath(struct LinkedList* start)
 {
-	Node * begin = start->head;
+	struct Node * begin = start->head;
 	printf("\n");
 	while(begin != NULL)
 	{
@@ -217,9 +218,9 @@ int displayAllPath(LinkedList* start)
 	return 1;
 }
 
-int searchInPath(LinkedList* start, char * exec)
+int searchInPath(struct LinkedList* start, char * exec)
 {
-	Node * begin = start->head;
+	struct Node * begin = start->head;
 	int findIt = 0 ;
 	while ( begin != NULL)
 	{
@@ -246,7 +247,7 @@ int searchInPath(LinkedList* start, char * exec)
 	return findIt;
 }
 
-Node* removePathFun( char * path, LinkedList* start, int * status)
+struct Node* removePathFun( char * path, struct LinkedList* start, int * status)
 {
 	if(start->head == NULL && start->end == NULL)
 	{
@@ -254,8 +255,8 @@ Node* removePathFun( char * path, LinkedList* start, int * status)
 		return NULL;
 	}
 	else{
-		Node * prev = NULL;
-		Node * begin = start->head;
+		struct Node * prev = NULL;
+		struct Node * begin = start->head;
 		while ( begin != NULL)
 		{
 			if(strcmp(path,begin->path)==0)
@@ -263,7 +264,7 @@ Node* removePathFun( char * path, LinkedList* start, int * status)
 				if(prev == NULL)
 				{
 					(*status) = 1;
-					Node* ptr = begin->next;
+					struct Node* ptr = begin->next;
 					free(begin->path);
 					free(begin);
 					return ptr;
@@ -288,9 +289,9 @@ Node* removePathFun( char * path, LinkedList* start, int * status)
 	
 }
 
-int searchPathExist( char * path, LinkedList* start)
+int searchPathExist( char * path, struct LinkedList* start)
 {
-	Node * begin = start->head;
+	struct Node * begin = start->head;
 	while(begin != NULL)
 	{
 		if(strcmp(path,begin->path)==0)
@@ -303,7 +304,7 @@ int searchPathExist( char * path, LinkedList* start)
 }
 
 
-int addPathFun(char * path, LinkedList* start)
+int addPathFun(char * path, struct LinkedList* start)
 {
 	
 	if( searchPathExist(path,start))
@@ -312,13 +313,13 @@ int addPathFun(char * path, LinkedList* start)
 	}
 	if(start->head  == NULL && start->end == NULL)
 	{
-		start->head = (Node*)malloc(sizeof(Node));
+		start->head = (struct Node*)malloc(sizeof(struct Node));
 		start->end = start->head;
 		start->end->next = NULL;
 		
 	}
 	else{
-		Node * temp = (Node*)malloc(sizeof(Node));
+		struct Node * temp = (struct Node*)malloc(sizeof(struct Node));
 		temp->next = NULL;
 		start->end->next = temp;
 		start->end = temp;

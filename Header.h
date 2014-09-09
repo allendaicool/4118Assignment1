@@ -9,13 +9,13 @@
 #ifndef cOS_Header_h
 #define cOS_Header_h
 
-typedef struct Node {
+struct Node {
 	char* path;
 	struct Node * next;
-	} Node;
+} ;
 
-typedef  struct LinkedList{
-    struct Node * head ;
-    struct Node * end;
-} LinkedList;
+struct LinkedList{
+	struct Node * head ;
+	struct Node * end;
+} ;
 #endif
