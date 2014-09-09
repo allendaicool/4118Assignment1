@@ -16,6 +16,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 #include "Header.h"
 char*  readFromStdIn(char * );
 int runProcess ( char ** , LinkedList *);
